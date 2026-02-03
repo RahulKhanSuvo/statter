@@ -1,8 +1,8 @@
 
 import Main from "@/layouts/Main";
-import Home from "@/pages/Home";
-import Login from "@/pages/Login";
-import Signup from "@/pages/Signup";
+import Home from "@/pages/Home/Home";
+import Login from "@/pages/auth/Login";
+import Signup from "@/pages/auth/Signup";
 import { createBrowserRouter } from "react-router";
 
 
