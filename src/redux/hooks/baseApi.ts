@@ -18,6 +18,7 @@ const rawBaseQuery = fetchBaseQuery({
     }
     return headers;
   },
+  credentials: "include",
 });
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,

@@ -3,8 +3,9 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logout } from "@/redux/features/auth/authSlice";
 import { RootState } from "@/redux/store";
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User as UserIcon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    toast.success("Logged out successfully");
   };
 
   const toggleMenu = () => {
@@ -53,12 +55,20 @@ const Navbar = () => {
           </div>
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-md transition-colors"
-              >
-                Logout
-              </button>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-accent/50">
+                  <UserIcon size={16} className="text-muted-foreground" />
+                  <span className="text-sm font-medium text-foreground">
+                    {user.firstName || "User"}
+                  </span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-md transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
             ) : (
               <div className="flex items-center space-x-2">
                 <Link
@@ -112,15 +122,23 @@ const Navbar = () => {
             ))}
             <div className="pt-4 pb-3 border-t border-border">
               {user ? (
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    setIsMenuOpen(false);
-                  }}
-                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-destructive hover:bg-destructive/10"
-                >
-                  Logout
-                </button>
+                <div className="space-y-1">
+                  <div className="px-3 py-2 flex items-center space-x-2">
+                    <UserIcon size={18} className="text-muted-foreground" />
+                    <span className="text-base font-medium text-foreground">
+                      {user.firstName || "User"}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-destructive hover:bg-destructive/10"
+                  >
+                    Logout
+                  </button>
+                </div>
               ) : (
                 <div className="space-y-2 px-3">
                   <Link
