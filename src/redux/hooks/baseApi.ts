@@ -28,33 +28,22 @@ const baseQueryWithReauth: BaseQueryFn<
   let result = await rawBaseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
-    // console.log("Token expired, attempting to refresh...");
-    const refreshToken = (api.getState() as RootState).auth.refreshToken;
+    const refreshResult = await rawBaseQuery(
+      {
+        url: "/auth/refresh-token",
+        method: "POST",
+      },
+      api,
+      extraOptions,
+    );
 
-    if (refreshToken) {
-      const refreshResult = await rawBaseQuery(
-        {
-          url: "/auth/refresh-token",
-          method: "POST",
-          body: { refreshToken },
-        },
-        api,
-        extraOptions,
+    if (refreshResult.data) {
+      api.dispatch(
+        setCredentials((refreshResult.data as any).data as LoginData),
       );
-
-      if (refreshResult.data) {
-        // console.log("Token refreshed successfully!");
-        api.dispatch(
-          setCredentials((refreshResult.data as any).data as LoginData),
-        );
-        // retry the original query
-        result = await rawBaseQuery(args, api, extraOptions);
-      } else {
-        // console.log("Refresh token failed, logging out...");
-        api.dispatch(logout());
-      }
+      result = await rawBaseQuery(args, api, extraOptions);
     } else {
-      // console.log("No refresh token available, logging out...");
+      // console.log("Refresh token failed, logging out...");
       api.dispatch(logout());
     }
   }

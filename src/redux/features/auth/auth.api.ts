@@ -1,5 +1,5 @@
 import baseApi from "@/redux/hooks/baseApi";
-import { LoginResponse } from "@/redux/types/auth.types";
+import { LoginResponse, User } from "@/redux/types/auth.types";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -31,6 +31,14 @@ export const authApi = baseApi.injectEndpoints({
         url: "/auth/refresh-token",
         method: "POST",
       }),
+      invalidatesTags: ["Auth"],
+    }),
+    me: builder.query<User, void>({
+      query: () => ({
+        url: "/auth/me",
+        method: "GET",
+      }),
+      providesTags: ["Auth"],
     }),
   }),
 });
@@ -40,4 +48,5 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useRefreshTokenMutation,
+  useMeQuery,
 } = authApi;
