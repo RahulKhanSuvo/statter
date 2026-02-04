@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { LoginData } from "@/redux/types/auth.types";
+import { LoginData, User } from "@/redux/types/auth.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface AuthState {
-  user: any | null;
+  user: User | null;
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
@@ -23,7 +21,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action: PayloadAction<LoginData>) => {
-      state.user = action.payload.user as any;
+      state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       state.isAuthenticated = true;
