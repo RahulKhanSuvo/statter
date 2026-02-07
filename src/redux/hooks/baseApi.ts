@@ -7,7 +7,7 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { logout, setCredentials } from "../features/auth/authSlice";
+import { logOut, setCredentials } from "../features/auth/authSlice";
 import { LoginData } from "../types/auth.types";
 const rawBaseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_API_BASE_URL,
@@ -44,7 +44,7 @@ const baseQueryWithReauth: BaseQueryFn<
       result = await rawBaseQuery(args, api, extraOptions);
     } else {
       // console.log("Refresh token failed, logging out...");
-      api.dispatch(logout());
+      api.dispatch(logOut());
     }
   }
   return result;
